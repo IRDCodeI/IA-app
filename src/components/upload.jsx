@@ -1,11 +1,12 @@
-"use client";
+/* eslint-disable react/prop-types */
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
 
-export default function UploadFile({ dataFields }) {
+export default function UploadFile({ dataFile }) {
+
   const [fileName, setFileName] = useState();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     if(file){
@@ -16,14 +17,15 @@ export default function UploadFile({ dataFields }) {
           delimiter: ",",
           header: true,
           complete: (res) => {
-            dataFields(res.meta.fields)
+            dataFile(res)
           }
         })
       };
 
       reader.readAsText(file);
     }
-  }, [dataFields, file]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file]);
 
   return (
     <div className="w-screen flex">
