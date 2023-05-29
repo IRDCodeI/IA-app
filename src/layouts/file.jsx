@@ -4,7 +4,7 @@ export default function File() {
   return (
     <>
       <form method="post">
-        <div className="w-max relative">
+        <div className="relative">
           <div
             className="w-auto h-auto self-center
             before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] 

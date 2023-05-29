@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -16,6 +16,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { TableHead } from "@mui/material";
+import FileContext from "../context/File/FileContext";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -79,19 +80,22 @@ function TablePaginationActions(props) {
   );
 }
 
-export default function TableFile({ dataset, dataFields }) {
-  const [data, setData] = useState([]);
-  const [fields, setFields] = useState([]);
+export default function TableFile() {
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [data, setData] = useState([])
+  const [fields, setFields] = useState();
+
+  const {fileData, fileFields} = useContext(FileContext)
 
   useEffect(() => {
-    setData(dataset);
-    setFields(dataFields);
-  }, [dataset, dataFields]);
+    setData(fileData)
+    setFields(fileFields)
+  }, [fileData, fileFields])
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataset.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -108,8 +112,8 @@ export default function TableFile({ dataset, dataFields }) {
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table" className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <TableHead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <TableRow>
-              {fields.length > 0 &&
-                fields.map((fieldDS) => (
+              {fields &&
+               fields.map((fieldDS) => (
                   <TableCell key={fieldDS} align="center" padding="normal" size="small">
                     <span  className="text-center text-sm font-bold">
                         {fieldDS.replace(/[_]/g, " ")}
@@ -124,7 +128,7 @@ export default function TableFile({ dataset, dataFields }) {
               : data
             ).map((row) => (
               <TableRow key={row[0]} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                {fields.map((fieldDS, index) => (
+                { fields && fields.map((fieldDS, index) => (
                   <TableCell align="center" key={index} component="th" scope="row" size="small">
                     <p className="m-0 w-32 h-fit py-2 truncate inline-block align-middle">{row[fieldDS]}</p>
                   </TableCell>

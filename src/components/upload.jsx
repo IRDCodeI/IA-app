@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Papa from "papaparse";
+import FileContext from "../context/File/FileContext";
 
-export default function UploadFile({ dataFile }) {
+
+export default function UploadFile() {
 
   const [fileName, setFileName] = useState();
-  const [file, setFile] = useState(null);
+  const {setFile} = useContext(FileContext)
 
-  useEffect(() => {
+  const handleChange = (file) => {
     if(file){
       const reader = new FileReader();
 
@@ -17,7 +19,7 @@ export default function UploadFile({ dataFile }) {
           delimiter: ",",
           header: true,
           complete: (res) => {
-            dataFile(res)
+            setFile(res)
           }
         })
       };
@@ -25,7 +27,7 @@ export default function UploadFile({ dataFile }) {
       reader.readAsText(file);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [file]);
+  };
 
   return (
     <div className="w-screen flex">
@@ -43,7 +45,7 @@ export default function UploadFile({ dataFile }) {
             name="csvFile"
             accept=".csv"
             onChange={(e) => {
-              setFile(e.target.files[0]);
+              handleChange(e.target.files[0]);
               setFileName(e.target.files[0].name);
             }}
             style={{ display: "none" }}
