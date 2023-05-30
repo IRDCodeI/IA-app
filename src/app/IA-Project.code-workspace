@@ -6,5 +6,10 @@
         {
             "path": "../../../IA-clustering"
         }
-    ]
+    ],
+    "settings": {
+      "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+      }
+    }
 }

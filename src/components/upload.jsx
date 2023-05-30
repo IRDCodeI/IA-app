@@ -4,14 +4,12 @@ import { useContext, useState } from "react";
 import Papa from "papaparse";
 import FileContext from "../context/File/FileContext";
 
-
 export default function UploadFile() {
-
   const [fileName, setFileName] = useState();
-  const {setFile} = useContext(FileContext)
+  const { setFile } = useContext(FileContext);
 
   const handleChange = (file) => {
-    if(file){
+    if (file) {
       const reader = new FileReader();
 
       reader.onload = function (e) {
@@ -19,14 +17,14 @@ export default function UploadFile() {
           delimiter: ",",
           header: true,
           complete: (res) => {
-            setFile(res)
-          }
-        })
+            setFile(res);
+          },
+        });
       };
 
       reader.readAsText(file);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   return (

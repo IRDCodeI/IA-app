@@ -7,12 +7,14 @@ import { useEffect, useContext, useState } from "react";
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function DataFields() {
-  const { fileFields } = useContext(FileContext);
+  const { file } = useContext(FileContext);
   const [fields, setFields] = useState();
 
   useEffect(() => {
-    setFields(fileFields);
-  }, [fileFields]);
+    if(file){
+      setFields(file.meta.fields);
+    }
+  }, [file]);
 
   return (
     <>

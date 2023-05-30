@@ -1,27 +1,39 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import FileContext from "../context/File/FileContext";
 import axios from "axios";
 
 export default function Charts() {
-  const { fileData } = useContext(FileContext);
-  const [data, setData] = useState()
-  
+  const { file } = useContext(FileContext);
+
   const getPythonChart = () => {
-    axios.post("http://127.0.0.1:8000/nlp", {
-      message: "Hello"
-    }).then((res) => {
-      console.warn(res)
-    }).catch(err => {
-      console.warn(err)
-    })
-  }
+    axios
+      .post(
+        "http://127.0.0.1:8000/nlp",
+        {
+          file: {
+            index: file.meta.fields,
+            data: file.data
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.warn(res);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  };
 
   useEffect(() => {
-    setData(fileData)
-    getPythonChart()
-  }, [fileData])
-
-
+    if(file){
+      getPythonChart();
+    }
+  }, [file]);
 
   return (
     <>

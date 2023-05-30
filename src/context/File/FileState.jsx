@@ -5,8 +5,7 @@ import FileContext from "./FileContext";
 
 const FileState = (props) => {
   const initialState = {
-    fileFields: [],
-    fileData: [],
+    file: null,
   };
 
   const [state, dispatch] = useReducer(FileReducer, initialState);
@@ -14,10 +13,7 @@ const FileState = (props) => {
   const setFile = (file) => {
     dispatch({
       type: "SET_FILE",
-      payload: {
-        fileFields: file.meta.fields,
-        fileData: file.data,
-      },
+      payload: file,
     });
   };
 
@@ -25,8 +21,7 @@ const FileState = (props) => {
     <>
       <FileContext.Provider
         value={{
-          fileFields: state.fileFields,
-          fileData: state.fileData,
+          file: state.file,
           setFile,
         }}
       >
