@@ -121,15 +121,15 @@ export default function TableFile() {
           <TableHead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <TableRow>
               {fields &&
-                fields.map((fieldDS) => (
+                fields.map((field) => (
                   <TableCell
-                    key={fieldDS}
+                    key={field}
                     align="center"
                     padding="normal"
                     size="small"
                   >
                     <span className="text-center text-sm font-bold">
-                      {fieldDS.replace(/[_]/g, " ")}
+                      {field.replace(/[_]/g, " ")}
                     </span>
                   </TableCell>
                 ))}
@@ -141,11 +141,11 @@ export default function TableFile() {
               : data
             ).map((row) => (
               <TableRow
-                key={row[0]}
+                key={row[0]+1}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 {fields &&
-                  fields.map((fieldDS, index) => (
+                  fields.map((field, index) => (
                     <TableCell
                       align="center"
                       key={index}
@@ -154,7 +154,7 @@ export default function TableFile() {
                       size="small"
                     >
                       <p className="m-0 w-32 h-fit py-2 truncate inline-block align-middle">
-                        {row[fieldDS]}
+                        {row[field]}
                       </p>
                     </TableCell>
                   ))}

@@ -3,7 +3,16 @@ const FileReducer = (state, action) => {
 
   switch (type) {
     case "SET_FILE":
-      console.warn(payload);
+      return {
+        ...state,
+        file: payload,
+      };
+    case "UPDATE_FILE":
+      return {
+        ...state,
+        file: payload,
+      };
+    case "RESET_FILE":      
       return {
         ...state,
         file: payload,

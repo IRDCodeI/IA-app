@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import FileReducer from "./FileReducer";
 import FileContext from "./FileContext";
 
@@ -8,14 +8,34 @@ const FileState = (props) => {
     file: null,
   };
 
+  const [data, setData] = useState()
+
   const [state, dispatch] = useReducer(FileReducer, initialState);
 
   const setFile = (file) => {
+
+    setData(file)
+
     dispatch({
       type: "SET_FILE",
       payload: file,
     });
   };
+
+  const resetFile = () => {
+    console.warn(data)
+    dispatch({
+      type: "RESET_FILE",
+      payload: data
+    })
+  }
+
+  const updateFile = (file) => {
+    dispatch({
+      type: "UPDATE_FILE",
+      payload:file
+    })
+  }
 
   return (
     <>
@@ -23,6 +43,8 @@ const FileState = (props) => {
         value={{
           file: state.file,
           setFile,
+          updateFile,
+          resetFile
         }}
       >
         {props.children}
