@@ -17,6 +17,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { TableHead } from "@mui/material";
 import FileContext from "../context/File/FileContext";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -131,6 +132,10 @@ export default function TableFile() {
                     <span className="text-center text-sm font-bold">
                       {field.replace(/[_]/g, " ")}
                     </span>
+
+                    <IconButton>
+                      <MoreVertIcon/>
+                    </IconButton>
                   </TableCell>
                 ))}
             </TableRow>
@@ -141,7 +146,7 @@ export default function TableFile() {
               : data
             ).map((row) => (
               <TableRow
-                key={row[0]+1}
+                key={row[0] + 1}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 {fields &&
