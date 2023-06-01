@@ -1,8 +1,9 @@
-import TabsBar from "../layouts/tabsbar";
+import TabsBar from "../layouts/Tabsbar";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import { AspectRatio } from "@mui/icons-material";
 import { ReactSVG } from "react-svg";
+
 const drawerWidth = 220;
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
     <Box sx={{ display: "flex" }}>
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+        sx={{ flexGrow: 1, bgcolor: "background.default" }}
       >
         <div className="flex flex-col items-center">
           <div className="w-100 h-auto mb-10">

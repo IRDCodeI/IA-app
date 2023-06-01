@@ -2,9 +2,9 @@
 import { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import File from "../layouts/file";
+import File from "./File";
 import Box from "@mui/material/Box";
-import Charts from "../layouts/charts";
+import ModelsIA from "../ui/Models";
 
 function TabPanel(props) {
 
@@ -49,16 +49,16 @@ export default function TabsBar() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab label="File" {...a11yProps(0)} />
-            <Tab label="Charts" {...a11yProps(1)} />
-            <Tab label="Clustering" {...a11yProps(2)} />
-            <Tab label="Simaliry" {...a11yProps(2)} />
+            <Tab label="IA's" {...a11yProps(1)} />
+            <Tab label="Similarity" {...a11yProps(2)} />
+            <Tab label="Clustering" {...a11yProps(3)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <File></File>
+          <File/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Charts></Charts>
+          <ModelsIA/>
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three
