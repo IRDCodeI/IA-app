@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Papa from "papaparse";
 import FileContext from "../context/File/FileContext";
 
 export default function UploadFile() {
-  const [fileName, setFileName] = useState();
-  const { setFile } = useContext(FileContext);
+  const [name, setName] = useState("")
+  const { file, fileName, setFile } = useContext(FileContext);
 
   const handleChange = (file) => {
     if (file) {
@@ -17,19 +17,22 @@ export default function UploadFile() {
           delimiter: ",",
           header: true,
           complete: (res) => {
-            setFile(res);
+            setFile(res, file.name);
           },
         });
       };
 
       reader.readAsText(file);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }    
   };
 
+  useEffect(() => {
+    setName(fileName)
+  }, [fileName])
+
   return (
-    <div className="w-screen flex">
-      <div className="w-screen mx-14 flex justify-center items-center">
+    <div className="flex">
+      <div className=" mx-14 flex justify-center items-center">
         <Button
           type="button"
           className="px-5 py-2.5 font-semibold inline-flex items-center justify-center overflow-hidden text-sm text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
@@ -44,13 +47,14 @@ export default function UploadFile() {
             accept=".csv"
             onChange={(e) => {
               handleChange(e.target.files[0]);
-              setFileName(e.target.files[0].name);
             }}
             style={{ display: "none" }}
           />
         </Button>
         <span className="mx-4 w-64 max-w-lg text-l font-semibold leading-normal text-gray-900 dark:text-white">
-          {fileName}
+          {
+            file && name
+          }
         </span>
       </div>
     </div>

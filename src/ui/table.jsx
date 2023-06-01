@@ -17,7 +17,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { TableHead } from "@mui/material";
 import FileContext from "../context/File/FileContext";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -129,13 +129,16 @@ export default function TableFile() {
                     padding="normal"
                     size="small"
                   >
-                    <span className="text-center text-sm font-bold">
-                      {field.replace(/[_]/g, " ")}
-                    </span>
-
-                    <IconButton>
-                      <MoreVertIcon/>
-                    </IconButton>
+                    <div className="w-full grid grid-cols-6 items-center">
+                      <span className="text-center text-sm font-bold col-span-5">
+                        {field.replace(/[_]/g, " ")}
+                      </span>
+                      <div className="justify-self-end static w-fit">
+                        <IconButton>
+                          <MoreVertIcon />
+                        </IconButton>
+                      </div>
+                    </div>
                   </TableCell>
                 ))}
             </TableRow>
@@ -157,10 +160,13 @@ export default function TableFile() {
                       component="th"
                       scope="row"
                       size="small"
+                      className="w-5"
                     >
-                      <p className="m-0 w-32 h-fit py-2 truncate inline-block align-middle">
-                        {row[field]}
-                      </p>
+                      <div className="w-full">
+                        <p className="m-0 w-52 h-fit py-2 truncate inline-block align-middle">
+                          {row[field]}
+                        </p>
+                      </div>
                     </TableCell>
                   ))}
               </TableRow>
@@ -174,22 +180,24 @@ export default function TableFile() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={data.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
+              {fields && (
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={fields.length}
+                  count={data.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      "aria-label": "rows per page",
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              )}
             </TableRow>
           </TableFooter>
         </Table>

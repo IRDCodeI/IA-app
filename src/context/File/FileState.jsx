@@ -5,6 +5,7 @@ import FileContext from "./FileContext";
 
 const FileState = (props) => {
   const initialState = {
+    fileName: "Select a csv file.",
     file: null,
   };
 
@@ -12,13 +13,14 @@ const FileState = (props) => {
 
   const [state, dispatch] = useReducer(FileReducer, initialState);
 
-  const setFile = (file) => {
-
-    setData(file)
+  const setFile = (file, name) => {
 
     dispatch({
       type: "SET_FILE",
-      payload: file,
+      payload: {
+        name,
+        file
+      },
     });
   };
 
@@ -41,6 +43,7 @@ const FileState = (props) => {
     <>
       <FileContext.Provider
         value={{
+          fileName: state.fileName,
           file: state.file,
           setFile,
           updateFile,
