@@ -2,7 +2,7 @@ import TabsBar from "../layouts/Tabsbar";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import { AspectRatio } from "@mui/icons-material";
-import { ReactSVG } from "react-svg";
+import { ReactSVG } from "react-svg";  
 
 const drawerWidth = 220;
 

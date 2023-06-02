@@ -46,7 +46,7 @@ export default function DataFields() {
       <UploadFile></UploadFile>
       <div className="relative m-0 flex flex-col py-5 items-center">
         <span
-          className="flex-shrink mx-4 my-3 text-xl font-semibold text-gray-400">
+          className="flex-shrink mx-4 my-3 text-xl font-semibold text-gray-400" hidden>
           Dataset Information
         </span>
           <div className="w-full">
@@ -62,24 +62,12 @@ export default function DataFields() {
                   }}
                 >
                   {fields &&
-                    fields.map((field, i) => (
+                    fields.map((field) => (
                       <div
                         key={field}
                         className="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                       >
-                        <h5 className="text-center text-lg font-bold uppercase tracking-tight text-gray-900 dark:text-white">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                key={i}
-                                checked={status[field]}
-                                label={field}
-                                onChange={handleChange}
-                                name={field}
-                                inputProps={{ "aria-label": "controlled" }}
-                              />
-                            }
-                          />
+                        <h5 className="text-center text-lg font-bold uppercase tracking-tight text-gray-900 dark:text-white">                        
                           {field.replace(/[_]/g, " ")}
                         </h5>
                       </div>
@@ -95,7 +83,7 @@ export default function DataFields() {
                     <CachedSharpIcon />
                   </IconButton>
                 </span>
-                <div className="h-full flex flex-col justify-center">
+                <div className="h-full flex flex-col justify-center items-center">
                   <TableFile></TableFile>
                 </div>
               </div>

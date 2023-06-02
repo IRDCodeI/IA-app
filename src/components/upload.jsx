@@ -17,6 +17,22 @@ export default function UploadFile() {
           delimiter: ",",
           header: true,
           complete: (res) => {
+
+            let exclude_papers = ["paper_id","keywords","year","session"]
+
+            res.meta.fields = res.meta.fields.filter(field => !exclude_papers.includes(field))
+            res.data.forEach((e, i) => {
+              if(e.session.toLowerCase().search("/machine|learning|artificial|intelligence|ia|ml/g") > 0){
+                res.data.filter(e => ![res.data[i]].includes(e))
+              }
+            })
+
+            res.data.forEach(e => {
+              e.filter(field => !exclude_papers.includes(field) )
+            })
+
+            console.warn(res)
+
             setFile(res, file.name);
           },
         });

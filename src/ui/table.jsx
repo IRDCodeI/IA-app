@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -18,6 +18,9 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { TableHead } from "@mui/material";
 import FileContext from "../context/File/FileContext";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { OverlayPanel } from "primereact/overlaypanel";
+import { MultiSelect } from "primereact/multiselect";
+import axios from "axios";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -86,15 +89,12 @@ export default function TableFile() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState([]);
   const [fields, setFields] = useState();
+  const [repeated, setRepeated] = useState();
+  const [filters, setFilters] = useState(null);
+  const [filter, setFilter] = useState(null);
 
   const { file } = useContext(FileContext);
-
-  useEffect(() => {
-    if (file) {
-      setData(file.data);
-      setFields(file.meta.fields);
-    }
-  }, [file]);
+  const op = useRef(null);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -107,6 +107,40 @@ export default function TableFile() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const getMetaFile = (file) => {
+    axios
+      .post(
+        "http://127.0.0.1:8000/meta",
+        {
+          file: {
+            index: file.meta.fields,
+            data: file.data
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.warn(JSON.parse(res.data))
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  };
+
+  useEffect(() => {
+    if (file) {
+      getMetaFile(file)
+      setData(file.data);
+      setFields(file.meta.fields);
+    }
+
+    console.warn(filter);
+  }, [file]);
 
   return (
     <>
@@ -122,7 +156,7 @@ export default function TableFile() {
           <TableHead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <TableRow>
               {fields &&
-                fields.map((field) => (
+                fields.map((field, index) => (
                   <TableCell
                     key={field}
                     align="center"
@@ -134,11 +168,33 @@ export default function TableFile() {
                         {field.replace(/[_]/g, " ")}
                       </span>
                       <div className="justify-self-end static w-fit">
-                        <IconButton>
-                          <MoreVertIcon />
-                        </IconButton>
+                        {repeated[index] != false ? (
+                          <>
+                            <IconButton onClick={(e) => op.current.toggle(e)}>
+                              <MoreVertIcon />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                     </div>
+                    {repeated[index] != false ? (
+                      <OverlayPanel ref={op}>
+                        {/* <MultiSelect
+                          value={filters}
+                          onChange={(e) => setFilters(e.value)}
+                          options={filter[index].filters}
+                          optionLabel="name"
+                          display="chip"
+                          placeholder="Select Cities"
+                          maxSelectedLabels={3}
+                          className="w-full md:w-20rem"
+                        /> */}
+                      </OverlayPanel>
+                    ) : (
+                      <></>
+                    )}
                   </TableCell>
                 ))}
             </TableRow>
