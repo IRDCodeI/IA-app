@@ -8,6 +8,24 @@ export default function UploadFile() {
   const [name, setName] = useState("")
   const { file, fileName, setFile } = useContext(FileContext);
 
+  const filterFile = (res) => {
+    let exclude_papers = ["paper_id", "keywords", "year", "session"]
+
+    res.meta.fields = res.meta.fields.filter(field => !exclude_papers.includes(field))
+
+    res.data.forEach((e, i) => {
+
+      if (e["session"] != undefined) {
+        let session = e["session"].toLowerCase().search("/machine|learning|artificial|intelligence|ia|ml|neural|clustering/g")
+        if (session > 0) {
+          res.data.splice(i, 1);
+        }
+      }
+    })
+
+    return res
+  }
+
   const handleChange = (file) => {
     if (file) {
       const reader = new FileReader();
@@ -17,29 +35,14 @@ export default function UploadFile() {
           delimiter: ",",
           header: true,
           complete: (res) => {
-
-            let exclude_papers = ["paper_id","keywords","year","session"]
-
-            res.meta.fields = res.meta.fields.filter(field => !exclude_papers.includes(field))
-            res.data.forEach((e, i) => {
-              if(e.session.toLowerCase().search("/machine|learning|artificial|intelligence|ia|ml/g") > 0){
-                res.data.filter(e => ![res.data[i]].includes(e))
-              }
-            })
-
-            res.data.forEach(e => {
-              e.filter(field => !exclude_papers.includes(field) )
-            })
-
-            console.warn(res)
-
+            res = filterFile(res)
             setFile(res, file.name);
           },
         });
       };
 
       reader.readAsText(file);
-    }    
+    }
   };
 
   useEffect(() => {
