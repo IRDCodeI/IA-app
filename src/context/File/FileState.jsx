@@ -25,7 +25,6 @@ const FileState = (props) => {
   };
 
   const resetFile = () => {
-    console.warn(data)
     dispatch({
       type: "RESET_FILE",
       payload: data

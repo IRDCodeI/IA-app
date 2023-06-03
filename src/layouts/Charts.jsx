@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import FileContext from "../context/File/FileContext";
 import axios from "axios";
-import ScatterPlot from "../charts/scatter";
+import ScatterPlot from "../charts/Scatter";
 
 export default function Charts() {
   const { file } = useContext(FileContext);
@@ -32,10 +32,9 @@ export default function Charts() {
   };
 
   useEffect(() => {
-    if (file) {
+    if (file ) {
       getPythonChart();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   return (

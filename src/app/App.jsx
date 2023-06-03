@@ -1,18 +1,13 @@
 import TabsBar from "../layouts/Tabsbar";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import { AspectRatio } from "@mui/icons-material";
-import { ReactSVG } from "react-svg";  
 
 const drawerWidth = 220;
 
 function App() {
   return (
     <Box sx={{ display: "flex" }}>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default" }}>
         <div className="flex flex-col items-center">
           <div className="w-100 h-auto mb-10">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
@@ -38,36 +33,44 @@ function App() {
         variant="permanent"
         anchor="right"
       >
-        <div className="w-full h-full flex flex-col items-center">
+        <div className="w-full h-full my-10 flex flex-col items-center">
           <h4 className="text-2xl py-5 font-bold dark:text-white">Models</h4>
-          <AspectRatio
-            sx={{
-              width: 200,
-              height: 50,
-              bgcolor: "background.level2",
-              borderRadius: "md",
-            }}
-          >
-            <ReactSVG src="./openAI.svg" />
-          </AspectRatio>
-          <AspectRatio
-            sx={{
-              width: 200,
-              bgcolor: "background.level2",
-              borderRadius: "md",
-            }}
-          >
-            <ReactSVG src="./googleBard.svg" />
-          </AspectRatio>
-          <AspectRatio
-            sx={{
-              width: 200,
-              bgcolor: "background.level2",
-              borderRadius: "md",
-            }}
-          >
-            <ReactSVG src="./anthropic.svg" />
-          </AspectRatio>
+          <div className="flex flex-col space-y-8 items-center">
+            <button
+              type="button"
+              value="ChatGPT 3.5"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              <img
+                className="rounded-full shadow-xl dark:shadow-gray-800"
+                src="/icons/openAI.png"
+                width={35}
+              ></img>
+            </button>
+            <button
+              type="button"
+              value="Google Bard"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              <img
+                className="rounded-full shadow-xl dark:shadow-gray-80"
+                src="/icons/gBard.png"
+                width={75}
+              ></img>
+            </button>
+            <button
+              hidden
+              type="button"
+              value="Antrophic"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              <img
+                className="rounded-full shadow-xl dark:shadow-gray-80"
+                src="/icons/antropic.png"
+                width={35}
+              ></img>
+            </button>
+          </div>
         </div>
       </Drawer>
     </Box>

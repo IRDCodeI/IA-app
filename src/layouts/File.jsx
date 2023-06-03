@@ -1,4 +1,4 @@
-import DataFields from "../ui/fields";
+import DataFields from "../ui/Fields";
 
 export default function File() {
   return (

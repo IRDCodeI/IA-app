@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FormControl, FormControlLabel, FormGroup } from "@mui/material";
+import { FormControl, FormGroup } from "@mui/material";
 import UploadFile from "../components/Upload";
 import FileContext from "../context/File/FileContext";
 import TableFile from "./Table";
-import Checkbox from "@mui/material/Checkbox";
 import { useEffect, useContext, useState } from "react";
 import CachedSharpIcon from "@mui/icons-material/CachedSharp";
 import { IconButton } from "@mui/material";
-import Charts from "../layouts/charts";
+import Charts from "../layouts/Charts";
 
 export default function DataFields() {
   const [fields, setFields] = useState();
