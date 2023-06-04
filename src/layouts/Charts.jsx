@@ -2,12 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import FileContext from "../context/File/FileContext";
 import axios from "axios";
 import ScatterPlot from "../charts/Scatter";
+import Loader from "../components/Loader";
 
 export default function Charts() {
   const { file } = useContext(FileContext);
   const [mds, setMds]= useState(null);
+  const [loader, setLoader] = useState(false)
 
   const getPythonChart = () => {
+    setLoader(true)
     axios
       .post(
         "http://127.0.0.1:8000/nlp",
@@ -24,6 +27,7 @@ export default function Charts() {
         }
       )
       .then((res) => {
+        setLoader(false)
         setMds(JSON.parse(res.data))
       })
       .catch((err) => {
@@ -39,6 +43,8 @@ export default function Charts() {
 
   return (
     <>
+      <Loader state={loader}/>
+
       <div className="w-full h-full">
         <span className="flex-shrink mx-4 my-5 text-2xl self-start font-semibold text-sky-600">
           Charts

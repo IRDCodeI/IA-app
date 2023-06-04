@@ -10,15 +10,19 @@ import { v4 as uuidv4 } from "uuid";
 import { RadioButton } from "primereact/radiobutton";
 import { InputTextarea } from "primereact/inputtextarea";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 export default function ModelsIA() {
   const [titles, setTitles] = useState([]);
   const [selectedTitle, setSelectedTitle] = useState();
   const [abstract, setAbstract] = useState("Abstract");
   const [abstractGen, setAbstractGen] = useState("Abstract Generate");
+  const [loader, setLoader] = useState(false)
+
   const { file } = useContext(FileContext);
 
   const generateAbstract = () => {
+    setLoader(true)
     const doc = {
       title: selectedTitle.name,
       abstract,
@@ -38,9 +42,10 @@ export default function ModelsIA() {
         }
       )
       .then((res) => {
+        setLoader(false)
         setAbstractGen(res.data);
       })
-      .catch((err) => {
+      .catch((err) => {        
         console.warn(err);
       });
   };
@@ -75,6 +80,7 @@ export default function ModelsIA() {
 
   return (
     <>
+      <Loader state={loader}/>
       <div className="w-full h-full px-10">
         <div className="mb-4">
           <div className="flex flex-row">

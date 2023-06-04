@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import File from "./File";
 import Box from "@mui/material/Box";
 import ModelsIA from "../ui/Models";
+import Similarity from "./Similarity";
 
 function TabPanel(props) {
 
@@ -61,7 +62,10 @@ export default function TabsBar() {
           <ModelsIA/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <Similarity/>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Clustering
         </TabPanel>
       </Box>
     </>
