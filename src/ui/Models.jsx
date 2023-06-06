@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { ScrollPanel } from "primereact/scrollpanel";
 import { Chip } from "primereact/chip";
 import "./ui.css";
@@ -11,6 +11,8 @@ import { RadioButton } from "primereact/radiobutton";
 import { InputTextarea } from "primereact/inputtextarea";
 import axios from "axios";
 import Loader from "../components/Loader";
+import AIContext from "../context/AI/IAContext";
+import { Toast } from 'primereact/toast';
 
 export default function ModelsIA() {
   const [titles, setTitles] = useState([]);
@@ -18,15 +20,20 @@ export default function ModelsIA() {
   const [abstract, setAbstract] = useState("Abstract");
   const [abstractGen, setAbstractGen] = useState("Abstract Generate");
   const [loader, setLoader] = useState(false)
+  const [ai, setAi] = useState()
+  const [tokens, setTokens] = useState({ tOriginal: 0, tGenerate: 0 })
 
+  const { model } = useContext(AIContext)
   const { file } = useContext(FileContext);
+
+  const toast = useRef(null);
 
   const generateAbstract = () => {
     setLoader(true)
     const doc = {
       title: selectedTitle.name,
       abstract,
-      model: "chatgpt",
+      model,
     };
 
     axios
@@ -43,10 +50,17 @@ export default function ModelsIA() {
       )
       .then((res) => {
         setLoader(false)
-        setAbstractGen(res.data);
+        setAbstractGen(res.data.abstract);
+        setTokens({
+          tOriginal: res.data.tokens_original,
+          tGenerate: res.data.tokens_generate
+        })
+        showSuccess()
       })
-      .catch((err) => {        
+      .catch((err) => {
+        setLoader(false)
         console.warn(err);
+        showError()
       });
   };
 
@@ -60,11 +74,19 @@ export default function ModelsIA() {
     setSelectedTitle(e.value);
   };
 
-  useEffect(()=>{
-    if(selectedTitle){
-        generateAbstract();
+  const showSuccess = () => {
+    toast.current.show({ severity: 'success', summary: 'Success', detail: 'Abstract generate', life: 3000 });
+  }
+
+  const showError = () => {
+    toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error in generate abstract', life: 3000 });
+  }
+
+  useEffect(() => {
+    if (selectedTitle) {
+      generateAbstract();
     }
-  },[selectedTitle])
+  }, [selectedTitle])
 
   useEffect(() => {
     if (file) {
@@ -78,16 +100,21 @@ export default function ModelsIA() {
     }
   }, [file]);
 
+  useEffect(() => {
+    model == 'chatgpt' ? setAi("GPT 3.5") : setAi("Bard")
+  }, [model])
+
   return (
     <>
-      <Loader state={loader}/>
+      <Loader state={loader} />
+      <Toast ref={toast} />
       <div className="w-full h-full px-10">
         <div className="mb-4">
           <div className="flex flex-row">
             <h4 className="text-2xl font-bold dark:text-white text-sky-600 mr-5">
               Model
             </h4>
-            <Chip label="GPT 3.5" />
+            <Chip label={ai} />
           </div>
         </div>
         <div className="px-14">
@@ -133,9 +160,12 @@ export default function ModelsIA() {
                 </span>
               </p>
               <div className="flex flex-col w-full">
-                <span className="text-xl font-bold dark:text-white text-sky-600 my-6">
-                  Original Abstract:
-                </span>
+                <div className="w-full flex flex-row justify-between my-6">
+                  <span className="text-xl font-bold dark:text-white text-sky-600">
+                    Original Abstract:
+                  </span>
+                  <span className="inline-block h-auto text-base text-gray-900 dark:text-white align-bottom">Tokens: <b>{tokens.tOriginal}</b></span>
+                </div>
                 <InputTextarea
                   readOnly
                   id="username"
@@ -145,9 +175,12 @@ export default function ModelsIA() {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <span className="text-xl font-bold dark:text-white text-sky-600 my-6">
-                  Generate Abstract:
-                </span>
+                <div className="w-full flex flex-row justify-between my-6">
+                  <span className="text-xl font-bold dark:text-white text-sky-600">
+                    Generate Abstract:
+                  </span>
+                  <span className="inline-block h-auto text-base text-gray-900 dark:text-white align-bottom">Tokens: <b>{tokens.tGenerate}</b></span>
+                </div>
                 <InputTextarea
                   readOnly
                   id="username"

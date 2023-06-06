@@ -24,6 +24,7 @@ export default function ScatterPlot({ mds }) {
     };
 
     useEffect(() => {
+        console.warn(data)
         if (mds) {
             setData(
                 {

@@ -1,10 +1,19 @@
 import TabsBar from "../layouts/Tabsbar";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
+import AIContext from "../context/AI/IAContext";
+import { useContext } from "react";
 
 const drawerWidth = 220;
 
 function App() {
+
+  const {setModel} = useContext(AIContext)
+
+  const handleClick = (e) =>{
+    setModel(e.target.value)
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default" }}>
@@ -38,8 +47,9 @@ function App() {
           <div className="flex flex-col space-y-8 items-center">
             <button
               type="button"
-              value="ChatGPT 3.5"
+              value="chatgpt"
               className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              onClick={handleClick}
             >
               <img
                 className="rounded-full shadow-xl dark:shadow-gray-800"
@@ -49,8 +59,9 @@ function App() {
             </button>
             <button
               type="button"
-              value="Google Bard"
+              value="bard"
               className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              onClick={handleClick}
             >
               <img
                 className="rounded-full shadow-xl dark:shadow-gray-80"
@@ -61,7 +72,7 @@ function App() {
             <button
               hidden
               type="button"
-              value="Antrophic"
+              value="claude"
               className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
             >
               <img

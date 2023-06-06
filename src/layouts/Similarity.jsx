@@ -1,30 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Loader from "../components/Loader";
 import { Dropdown } from "primereact/dropdown";
 import axios from "axios";
 import { Chip } from "primereact/chip";
 import SimilarityChart from "../ui/SimilarityChart";
+import AIContext from "../context/AI/IAContext";
 
 export default function Similarity() {
   const [loader, setLoader] = useState(false);
   const [doc, setDoc] = useState(null);
   const [titles, setTitles] = useState(null);
+  const [ai, setAi] = useState()
+
+  const {model} = useContext(AIContext)
 
   useEffect(() => {
     setLoader(true);
     axios
       .get("http://localhost:8000/similarity/documents", {
         params: {
-          model: "chatgpt",
+          model,
         },
       })
       .then((res) => {
         console.warn(res);
         setLoader(false);
         setTitles(res.data);
+        
       })
-      .catch((err) => console.warn(err));
-  }, []);
+      .catch((err) => {
+        console.warn(err)
+      });
+  }, [model]);
+  
+  useEffect(() => {
+    model == 'chatgpt' ? setAi("GPT 3.5") : setAi("Bard")
+  }, [model])
+
 
   return (
     <>
@@ -35,7 +47,7 @@ export default function Similarity() {
             <h4 className="text-2xl font-bold dark:text-white text-sky-600 mr-5">
               Model
             </h4>
-            <Chip label="GPT 3.5" />
+            <Chip label={ai} />
           </div>
           <div className="w-96 flex flex-auto flex-row space-x-4 items-center">
             <span className="flex-shrink mx-4 my-5 text-2xl self-start font-semibold text-sky-600">

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
 import Loader from "../components/Loader";
+import { Toast } from 'primereact/toast';
 
 ChartJS.register(
   CategoryScale,
@@ -40,6 +41,7 @@ export default function SimilarityChart({ title, model }) {
   const [chartOne, setChartOne] = useState(null)
   const [chartTwo, setChartTwo] = useState(null)
   const [loader, setLoader] = useState(false);
+  const toast = useRef(null);
 
   const getSimilarityDocs = () => {
     setLoader(true);
@@ -85,9 +87,12 @@ export default function SimilarityChart({ title, model }) {
           },
         ],
       });
+      showSuccess()
     })
-    .catch((err) => {        
+    .catch((err) => {  
+      setLoader(false)      
       console.warn(err);
+      showError()
     });
   }
 
@@ -104,9 +109,18 @@ export default function SimilarityChart({ title, model }) {
     }
   }, [doc])
 
+  const showSuccess = () => {
+    toast.current.show({severity:'success', summary: 'Success', detail:'Similarity analysis complete', life: 3000});
+  }
+
+  const showError = () => {
+    toast.current.show({severity:'error', summary: 'Error', detail:'Error in similarity', life: 3000});
+  }
+
   return (
     <>
       <Loader state={loader} />
+      <Toast ref={toast} />
       <div className="w-full flex flex-row justify-around items-center">
         <div className="w-full h-full flex flex-col space-y-8">
           <h4 className="text-2xl mt-5 font-bold dark:text-white text-sky-600 mr-5 self-center">
